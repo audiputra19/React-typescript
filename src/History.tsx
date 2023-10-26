@@ -6,22 +6,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveTransactionData } from "./Redux/Product/Action";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./Redux/hook";
-import { HisI, Product } from "./InterfaceApi";
+import { Product, TransactionI } from "./InterfaceApi";
 
 const History = () => {
     const { hisTransactions } = useAppSelector(state => state.product)
-    const [prod, setProd] = useState<Array<{idTransaction:string;date:Date;} & HisI>>([]);
+    const [prod, setProd] = useState<Array<{idTransaction:string;date:Date;} & TransactionI>>([]);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const temphHisTransactions: Array<{idTransaction:string;date:Date;} & HisI> = [];
+        const temphHisTransactions: Array<{idTransaction:string;date:Date;qty:number} & TransactionI> = [];
         hisTransactions.forEach(item => {
             item.data.forEach(dt => {
                 temphHisTransactions.push({
-                    ...item,
+                    ...dt,
                     idTransaction: item.id,
-                    date: item.date
+                    date: item.date,
                 })
             })
         })
@@ -29,8 +29,8 @@ const History = () => {
         setProd(temphHisTransactions);
     },[])
 
-    const transaction = (post:{idTransaction:string;date:Date;} & HisI, i:number) => {
-        const price = post.data.price * post.qty;
+    const transaction = (post:{idTransaction:string;date:Date;} & TransactionI, i:number) => {
+        const price = post.price * post.qty;
         const pricedisc = (post.price * (post.disc/100)) * post.qty;
         const totaldisc = price - pricedisc;
 
@@ -54,8 +54,8 @@ const History = () => {
                 price: post.price,
                 disc: post.disc,
                 qty: 1,
-                size: post.size,
-                transactionDate: new Date().toLocaleString("id-ID")
+                size: post.size[0],
+                transactionDate: new Date()
             }))
             navigate(`/cart`)
         }

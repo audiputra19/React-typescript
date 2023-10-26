@@ -28,6 +28,6 @@ export interface TransactionI {
 
 export interface HisI {
     id: string;
-    data: Array<Product>;
+    data: Array<TransactionI>;
     date: Date;
 }
