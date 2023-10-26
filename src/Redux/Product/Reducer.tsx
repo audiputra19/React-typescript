@@ -15,7 +15,7 @@ const productReducer = (state = INITIAL_STATE, action:any) => {
     switch(action.type){
         case productTypes.SAVE_TRANSACTION:
             let prevProduct = [...state.transactions];
-            let newTransaction = [];
+            let newTransaction: TransactionI[] = [];
             const isAvailableProduct = state.transactions.find(item => item.id === action.payload.id);
             if(isAvailableProduct){
                 prevProduct = state.transactions.filter(item => item.id !== action.payload.id);
@@ -48,7 +48,7 @@ const productReducer = (state = INITIAL_STATE, action:any) => {
 
         case productTypes.MIN_TRANSACTION:
             let prevQtyMin = [...state.transactions];
-            let newQtyMin: any[] = [];
+            let newQtyMin: TransactionI[] = [];
             const qtyMin = state.transactions.find(item => item.id === action.payload);
             if(qtyMin){
                 prevQtyMin   = state.transactions.filter(item => item.id !== action.payload);
@@ -66,7 +66,7 @@ const productReducer = (state = INITIAL_STATE, action:any) => {
                 
         case productTypes.DEL_TRANSACTION:
             let prevProdDel = [...state.transactions];
-            let newProdDel = [];
+            let newProdDel: TransactionI[] = [];
             
             prevProdDel = state.transactions.filter(item => item.id !== action.payload);
             return {

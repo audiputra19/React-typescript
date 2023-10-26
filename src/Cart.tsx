@@ -6,16 +6,18 @@ import { useNavigate } from "react-router-dom";
 import { delTransactionData, minTransactionData, plusTransactionData } from "./Redux/Product/Action";
 import moment from "moment";
 import Modal from "./Modal";
+import { useAppDispatch, useAppSelector } from "./Redux/hook";
+import { TransactionI } from "./InterfaceApi";
 
 const Cart = () => {
-    const { transactions } = useSelector(state => state.product);
+    const { transactions } = useAppSelector(state => state.product);
     const navigate = useNavigate();
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalDisc, setTotalDisc] = useState(0);
     const [totalAll, setTotalAll] = useState(0);
-    const [sortList, setSortList] = useState([]);
+    //const [sortList, setSortList] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const handleOnClose = () => setShowModal(false);
 
     useEffect(() => {
@@ -32,12 +34,12 @@ const Cart = () => {
         setTotalAll(resultPrice-resultDisc);
     }, [transactions]);
 
-    useEffect(() => {
-        transactions.sort((a,b) => new Date(a.date) - new Date(b.date))
-        setSortList(transactions)
-    },[])
+    // useEffect(() => {
+    //     //transactions.sort((a,b) => new Date(a.date) - new Date(b.date))
+    //     setSortList(transactions)
+    // },[])
 
-    const post = (item, i) => {
+    const post = (item: TransactionI, i:number) => {
         const price = item.price * item.qty;
         const pricedisc = (item.price * (item.disc/100)) * item.qty;
         const totaldisc = price - pricedisc;
@@ -56,7 +58,7 @@ const Cart = () => {
 
         function Detail() {
 
-            if(item.size !== 0){
+            if(item.size !== ''){
                 return (
                     <div className="text-xs text-gray-500">
                         <label>{item.size}</label>
